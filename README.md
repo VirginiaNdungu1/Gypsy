@@ -96,4 +96,4 @@ python3.6 manage.py test
        Heroku
 
 
-## MIT (c) 2017 [Virginia Ndung'u](https://github.com/VirginiaNdungu1/Gypsy)
+                 ## MIT (c) 2017 [Virginia Ndung'u](https://github.com/VirginiaNdungu1/Gypsy)
