@@ -87,6 +87,15 @@ class Blogsection(db.Model):
     # Define Relationships
     posts = db.relationship('Post', backref='blogsection', lazy='dynamic')
 
+    def save_blogsection(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_blogsections(cls):
+        all_blogsections = Blogsection.query.all()
+        return all_blogsections
+
     def __repr__(self):
         return '<Blog Section: {}>'.format(self.name)
 
