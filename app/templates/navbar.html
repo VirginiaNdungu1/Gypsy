@@ -20,15 +20,48 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href="{{url_for('main.index')}}">Home</a>
-            </li>
-            <li>
-              <a href="#">Register</a>
-            </li>
-            <li>
-              <a href="#">Sign In</a>
-            </li>
+            {% if current_user.is_authenticated %}
+              {% if current_user.is_admin %}
+                <li>
+                  <a href="{{url_for('main.admin_dashboard')}}">Admin</a>
+                </li>
+                <li>
+                  <a href="#">Roles</a>
+                </li>
+                <li>
+                  <a href="#">Blog Sections</a>
+                </li>
+                <li>
+                  <a href="#">Blog Posts</a>
+                </li>
+                <li>
+                  <a href="#">Blog Comments</a>
+                </li>
+              {% else %}
+                <li>
+                  <a href="{{ url_for('main.dashboard') }}">Home</a>
+                {% endif %}
+              </li>
+              <li>
+                <a href="{{ url_for('auth.logout') }}">Sign Out</a>
+              </li>
+              <li>
+                <a>
+                  <i class="fa fa-user"></i>
+                  Hi,
+                  {{ current_user.username }}!</a>
+              </li>
+            {% else %}
+              <li>
+                <a href="{{ url_for('main.index') }}">Home</a>
+              </li>
+              <li>
+                <a href="{{ url_for('auth.register') }}">Register</a>
+              </li>
+              <li>
+                <a href="{{ url_for('auth.login') }}">Sign In</a>
+              </li>
+            {% endif %}
           </ul>
         </div>
       </div>
