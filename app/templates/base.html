@@ -16,7 +16,10 @@
     {% include 'navbar.html'%}
   {% endblock %}
   <!-- content section -->
-  {% block content %}{% endblock %}
+  <div class="content-wrapper">
+    {% block content %}{% endblock %}
+  </div>
+
   <!-- footer section -->
   {% block footer %}
     {% include 'footer.html'%}

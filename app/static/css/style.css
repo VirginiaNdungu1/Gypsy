@@ -27,19 +27,20 @@ p.copyright {
 
 .alert-info {
   width: 50%;
+  text-align: center;
   margin: auto;
-  color: #687430;
-  background-color: #e6ecca;
-  border-color: #aec251;
+  color: teal;
+  background-color: #EEEEEE;
+  border-color: teal;
 }
 
 .btn-default {
-  border-color: #aec251;
-  color: #aec251;
+  border-color: teal;
+  color: teal;
 }
 
 .btn-default:hover {
-  background-color: #aec251;
+  background-color: teal;
 }
 
 .center {
@@ -63,9 +64,26 @@ p.copyright {
   font-weight: 400;
 }
 
-.wrapper {
+.content-wrapper {
   min-height: 100%;
   height: auto !important;
   height: 100%;
   margin: 0 auto -4em;
+}
+
+.outer-table {
+  display: table;
+  height: 80%;
+  width: 100%;
+  position: absolute;
+}
+
+.middle-table {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.inner-table {
+  margin-left: auto;
+  margin-right: auto;
 }
