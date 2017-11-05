@@ -17,6 +17,9 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand topnav" href="{{url_for('main.index')}}">Gypsy Blogs</a>
+
+          <a class="navbar-brand topnav" href="{{ url_for('main.dashboard') }}">Home</a>
+
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
@@ -38,10 +41,18 @@
                   <a href="#">Blog Comments</a>
                 </li>
               {% else %}
-                <li>
-                  <a href="{{ url_for('main.dashboard') }}">Home</a>
-                {% endif %}
-              </li>
+
+                <div class="dropdown">
+                  <li class="dropbtn">Blog Sections
+                    <i class="fa fa-caret-down"></i>
+                  </li>
+                  <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                  </div>
+                </div>
+              {% endif %}
               <li>
                 <a href="{{ url_for('auth.logout') }}">Sign Out</a>
               </li>
