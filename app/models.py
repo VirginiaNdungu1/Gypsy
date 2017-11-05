@@ -61,6 +61,10 @@ class User(db.Model, UserMixin):
         '''
         return check_password_hash(self.user_pwd, password)
 
+    def save_user(self):
+        db.session.add(self)
+        db.session.commit()
+
     def __repr__(self):
         return '<Reader: {}>'.format(self.username)
 
