@@ -1,56 +1,120 @@
-from . import db
-from flask_user import UserMixin
-
-
-# Define Role model
+from . import db, login_manager
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class Role(db.Model):
+    '''
+    Define Role model
+    '''
     __tablename__ = 'roles'
-    id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(50), unique=True)  # for @roles_accepted()
-    # for display purposes
-    label = db.Column(db.Unicode(255), server_default=u'')
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(60), unique=True)
+    description = db.Column(db.String(200))
+    users = db.relationship('User', backref='role',
+                            lazy='dynamic')
 
-# Define User model
+    def __repr__(self):
+        return '<Role: {}>'.format(self.name)
 
 
 class User(db.Model, UserMixin):
+    '''
+    Define User model
+    '''
     __tablename__ = 'users'
-    id = db.Column(db.Integer(), primary_key=True)
-    # User Authentication info required for flask_user
-    username = db.Column(db.String(256), nullable=True, unique=True)
-    email = db.Column(db.String(255), unique=True, index=True)
-    confirmed_at = db.Column(db.DateTime())
-    user_pwd = db.Column(db.String(255))
-    active = db.Column(db.Boolean(), nullable=False, server_default='0')
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(60), index=True, unique=True)
+    username = db.Column(db.String(60), index=True, unique=True)
+    first_name = db.Column(db.String(60), index=True)
+    last_name = db.Column(db.String(60), index=True)
+    user_pwd = db.Column(db.String(128))
 
-    # User information
-    active = db.Column('is_active', db.Boolean(),
-                       nullable=False, server_default='0')
-    first_name = db.Column(db.Unicode(50), nullable=False, server_default=u'')
-    last_name = db.Column(db.Unicode(50), nullable=False, server_default=u'')
-    status = db.Column(db.String(255))
-    # Relationships
-    roles = db.relationship('Role', secondary='user_roles',
-                            backref=db.backref('users', lazy='dynamic'))
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+
+    # Define Relationships
+    blogsections = db.relationship(
+        'Blogsection', backref='user', lazy='dynamic')
+    posts = db.relationship(
+        'Post', backref='user', lazy='dynamic')
+    comments = db.relationship('Comment', backref='user', lazy='dynamic')
+
+    is_admin = db.Column(db.Boolean, default=False)
 
     @property
     def password(self):
-        raise AttributeError('You can read the password attribute')
+        '''
+        prevent password from being accessed
+        '''
+        raise AttributeError('You cannot read the password attribute')
 
     @password.setter
     def password(self, password):
-        self.user_pwd = hash_password(password)
+        '''
+        Set password to a hashed password
+        '''
+        self.user_pwd = generate_password_hash(password)
+
+    def verify_password(self, password):
+        '''
+        check if hashed pwd matches actual pwd
+        '''
+        return check_password_hash(self.user_pwd, password)
+
+    def __repr__(self):
+        return '<Reader: {}>'.format(self.username)
+
+    # set up user loader
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
 
 
-# Define UserRoles model
+class Blogsection(db.Model):
+    '''
+    create blog section table
+    '''
+    __tablename__ = 'blogsections'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(60), unique=True)
+    user_id = db.Column(db.ForeignKey('users.id'))
+
+    # Define Relationships
+    posts = db.relationship('Post', backref='blogsection', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Blog Section: {}>'.format(self.name)
 
 
-class UserRoles(db.Model):
-    __tablename__ = 'user_roles'
+class Post(db.Model):
+    '''
+    create blog posts table
+    '''
+    __tablename__ = 'posts'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(60), unique=True)
+    description = db.Column(db.String())
+    user_id = db.Column(db.ForeignKey('users.id'))
+    section_id = db.Column(db.ForeignKey('blogsections.id'))
+
+    # Define Relationships
+    comments = db.relationship('Comment', backref='post',
+                               lazy='dynamic')
+
+    def __repr__(self):
+        return '<Post: {}'.format(self.title)
+
+
+class Comment(db.Model):
+    '''
+    create comments table
+    '''
     id = db.Column(db.Integer(), primary_key=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey(
-        'users.id', ondelete='CASCADE'))
-    role_id = db.Column(db.Integer(), db.ForeignKey(
-        'roles.id', ondelete='CASCADE'))
+    description = db.Column(db.String())
+    user_id = db.Column(db.ForeignKey('users.id'))
+    post_id = db.Column(db.ForeignKey('posts.id'))
+
+    def __repr__(self):
+        return '<Comment: {}'.format(self.description)
