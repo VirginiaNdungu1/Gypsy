@@ -2,6 +2,7 @@ import os
 
 
 class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
@@ -15,7 +16,7 @@ class DevConfig(Config):
 
 
 class TestConfig(Config):
-    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://monster:Hummingbirdcomp#@localhost/bliss_posts'
+    # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://monster:Hummingbirdcomp#@localhost/gypsy_blogs_test'
     pass
 
 
