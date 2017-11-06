@@ -65,10 +65,24 @@ p.copyright {
 }
 
 .content-wrapper {
-  min-height: 100%;
+  /*min-height: 100%;
   height: auto !important;
   height: 100%;
   margin: 0 auto -4em;
+  overflow: hidden;
+  position: absolute;*/
+  margin: 20px;
+  overflow: hidden;
+}
+
+#footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  /*background-color: red;*/
+  /*color: white;*/
+  text-align: center;
 }
 
 .outer-table {
