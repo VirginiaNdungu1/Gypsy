@@ -1,0 +1,18 @@
+{% extends 'base.html'%}
+
+{% import 'macros.html' as macro %}
+{%block styles%}
+  {{super()}}
+  <link rel="stylesheet" href="{{url_for('static', filename='css/navbar.css')}}">
+{% endblock %}
+
+{%block content%}
+  <div class="dropdown">
+  <li class="dropbtn">Blog Sections
+    <i class="fa fa-caret-down"></i>
+  </li>
+  <div class="dropdown-content">
+    {{macro.displayblogsections(blogsections)}}
+  </div>
+</div>
+{% endblock %}
