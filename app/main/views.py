@@ -2,6 +2,8 @@ from flask import flash, render_template, abort
 from flask_login import login_required, current_user
 
 from .import main
+from .. import db
+from app.models import User, Blogsection
 
 
 @main.route('/')
@@ -28,3 +30,17 @@ def admin_dashboard():
         abort(403)
     title = "Gypsy admin dashboard"
     return render_template('main/admin_dashboard.html', title=title)
+
+
+@main.route('/blogsections')
+def display_blogsections():
+    blogsections = Blogsection.get_blogsections()
+
+    # title = 'Blog Sections'
+    return render_template('main/blogsections.html', blogsections=blogsections)
+
+
+@main.route('/blogsections/<int:id>')
+def single_blogsection(id):
+    blogsection = Blogsection.query.get(id)
+    return render_template('main/blogsections.html', blogsection=blogsection)
