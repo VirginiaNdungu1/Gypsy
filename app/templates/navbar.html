@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>{{title}}</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/navbar.css')}}">
+{% import 'macros.html' as macro %}
 
-  </head>
-  <body>
+{% block styles%}
+  <link rel="stylesheet" href="{{url_for('static', filename='css/navbar.css')}}">
+  {% endblock%}
+
+  {% block title %}{{title}}{% endblock %}
+
+  {% block body %}
     <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
       <div class="container topnav">
         <div class="navbar-header">
@@ -18,7 +18,7 @@
           </button>
           <a class="navbar-brand topnav" href="{{url_for('main.index')}}">Gypsy Blogs</a>
 
-          <a class="navbar-brand topnav" href="{{ url_for('main.dashboard') }}">Home</a>
+          <a class="navbar-brand topnav" href="{{ url_for('main.index') }}">Home</a>
 
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -29,27 +29,23 @@
                   <a href="{{url_for('main.admin_dashboard')}}">Admin</a>
                 </li>
                 <li>
-                  <a href="#">Roles</a>
-                </li>
-                <li>
                   <a href="{{url_for('admin.view_blogsections')}}">Blog Sections</a>
                 </li>
                 <li>
-                  <a href="#">Blog Posts</a>
+                  <a href="{{url_for('admin.view_blogposts')}}">Blog Posts</a>
                 </li>
                 <li>
-                  <a href="#">Blog Comments</a>
+                  <a href="{{url_for('admin.view_comments')}}">Blog Comments</a>
                 </li>
               {% else %}
-
                 <div class="dropdown">
-                  <li class="dropbtn">Blog Sections
-                    <i class="fa fa-caret-down"></i>
-                  </li>
+                  <a href="{{url_for('main.display_blogsections')}}">
+                    <li class="dropbtn">Blog Sections
+                      <i class="fa fa-caret-down"></i>
+                    </li>
+                  </a>
                   <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                    {{macro.displayblogsections(blogsections)}}
                   </div>
                 </div>
               {% endif %}
@@ -77,5 +73,4 @@
         </div>
       </div>
     </nav>
-  </body>
-</html>
+  {% endblock %}
