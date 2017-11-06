@@ -55,7 +55,7 @@ def login():
             if user.is_admin:
                 return redirect(url_for('main.admin_dashboard'))
             else:
-                return redirect(url_for('main.dashboard'))
+                return redirect(url_for('main.index'))
         else:
             flash("Inavlid email or password")
     title = "Gypsy Sign In"
