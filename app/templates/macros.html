@@ -1,0 +1,5 @@
+{% macro displayblogsections(blogsections_list) %}
+  {% for blogsection in blogsections_list %}
+    <a href="{{url_for('main.single_blogsection', id=blogsection.id)}}">{{blogsection.name}}</a>
+  {% endfor %}
+{% endmacro %}
