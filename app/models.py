@@ -116,6 +116,10 @@ class Post(db.Model):
     comments = db.relationship('Comment', backref='post',
                                lazy='dynamic')
 
+    def save_blogpost(self):
+        db.session.add(self)
+        db.session.commit()
+
     def __repr__(self):
         return '<Post: {}'.format(self.title)
 
@@ -128,6 +132,10 @@ class Comment(db.Model):
     description = db.Column(db.String())
     user_id = db.Column(db.ForeignKey('users.id'))
     post_id = db.Column(db.ForeignKey('posts.id'))
+
+    def save_comment(self):
+        db.session.add(self)
+        db.session.commit()
 
     def __repr__(self):
         return '<Comment: {}'.format(self.description)
